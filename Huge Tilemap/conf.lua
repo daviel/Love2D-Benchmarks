@@ -1,12 +1,12 @@
 function love.conf(t)
     t.identity = nil                    -- The name of the save directory (string)
-    t.version = "0.10.2"                -- The LÖVE version this game was made for (string)
+    t.version = "11.1"                -- The LÖVE version this game was made for (string)
     t.console = false                   -- Attach a console (boolean, Windows only)
-    t.accelerometerjoystick = false      -- Enable the accelerometer on iOS and Android by exposing it as a Joystick (boolean)
+    t.accelerometerjoystick = false -- Enable the accelerometer on iOS and Android by exposing it as a Joystick (boolean)
     t.externalstorage = false           -- True to save files (and read from the save directory) in external storage on Android (boolean)
     t.gammacorrect = false              -- Enable gamma-correct rendering, when supported by the system (boolean)
 
-    t.window.title = "Love2D Benchmark 2 - Nested Object Logic"         -- The window title (string)
+    t.window.title = "Love2D Benchmark 3 - Huge Tilemap"         -- The window title (string)
     t.window.icon = nil                 -- Filepath to an image to use as the window's icon (string)
     t.window.width = 1280                -- The window width (number)
     t.window.height = 720               -- The window height (number)
@@ -15,7 +15,7 @@ function love.conf(t)
     t.window.minwidth = 1               -- Minimum window width if the window is resizable (number)
     t.window.minheight = 1              -- Minimum window height if the window is resizable (number)
     t.window.fullscreen = false         -- Enable fullscreen (boolean)
-    t.window.fullscreentype = "exclusive" -- Choose between "desktop" fullscreen or "exclusive" fullscreen mode (string)
+    t.window.fullscreentype = "desktop" -- Choose between "desktop" fullscreen or "exclusive" fullscreen mode (string)
     t.window.vsync = false               -- Enable vertical sync (boolean)
     t.window.msaa = 0                   -- The number of samples to use with multi-sampled antialiasing (number)
     t.window.display = 1                -- Index of the monitor to show the window in (number)
@@ -39,8 +39,4 @@ function love.conf(t)
     t.modules.video = true              -- Enable the video module (boolean)
     t.modules.window = true             -- Enable the window module (boolean)
     t.modules.thread = true             -- Enable the thread module (boolean)
-
-    t.releases = {
-      title = "test1"
-    }
 end
