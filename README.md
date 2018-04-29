@@ -9,7 +9,17 @@ Useful optimizations(I found so far):
   
 
 ## How-To
-For automatic testing you can run the testSuite.sh like this: ./testSuite or ./testSuite 4 for 4 iterations per benchmark or as this ./testSuite.sh 2 Circle\ Physics/main.lua for 2 iterations of the Circle Physics benchmark.  
+For automatic testing you can run the testSuite.sh like this: 
+
+    # run all benchmarks 5 times
+    ./testSuite
+    
+    # for 4 iterations per benchmark or as this 
+    ./testSuite 4
+    
+    # for 2 iterations of the Circle Physics benchmark.  
+    ./testSuite.sh 2 Circle\ Physics/main.lua 
+    
 After that you get the result in your console with calculated average, minimum and maximum as well as every result of every iteration.
 
 ## Benchmarking
