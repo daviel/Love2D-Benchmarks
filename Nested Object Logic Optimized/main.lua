@@ -67,15 +67,17 @@ function love.load()
 end
 
 function processObjects(dt)
-  for x=0,objectCount do
-    objects[x].entity:process(dt)
-    objectsBatch:set(objects[x].id, objects[x].entity.x, objects[x].entity.y )
+  for i=0,objectCount do
+    local object = objects[i]
+    object.entity:process(dt)
+    objectsBatch:set(object.id, object.entity.x, object.entity.y )
   end
 end
 
 function addObjects()
-  for x=0, objectCount do
-      objects[x].id = objectsBatch:add( objects[x].entity.x, objects[x].entity.y )
+  for i=0, objectCount do
+      local object = objects[i]
+      object.id = objectsBatch:add( object.entity.x, object.entity.y )
   end
 end
 
