@@ -5,6 +5,12 @@ This are a few benchmarks for testing the pure performance of Love2D. I implemen
 Useful optimizations(I found so far):
 - Use SpriteBatches
 - Don't clear that SpriteBatch. Just set the sprites positions(10-20% more performance)
+- Use locals: see Circle Physics setObjects method in the optimized version and non-optimized one
+  
+
+## How-To
+For automatic testing you can run the testSuite.sh like this: ./testSuite or ./testSuite 4 for 4 iterations per benchmark or as this ./testSuite.sh 2 Circle\ Physics/main.lua for 2 iterations of the Circle Physics benchmark.  
+After that you get the result in your console with calculated average, minimum and maximum as well as every result of every iteration.
 
 ## Benchmarking
 - Every benchmark runs for a fixed time(8 seconds by default) and counts every rendered frame
