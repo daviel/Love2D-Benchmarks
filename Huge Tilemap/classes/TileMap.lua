@@ -81,8 +81,11 @@ function Tilemap:calcMap(xOffset, yOffset, zoom)
         self.minSetSize[2] = minY
         self.maxSetSize[1] = maxX
         self.maxSetSize[2] = maxY
-        -- print(minX, minY, maxX, maxY)
+        
+        local start = love.timer.getTime()
         self:renderMap()
+        local result = love.timer.getTime() - start
+        print( string.format( "RenderMap: %.5f", result * 1000 ))
     end
 end
 
