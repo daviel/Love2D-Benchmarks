@@ -67,15 +67,17 @@ function love.load()
 end
 
 function processObjects(dt)
-  for x=0,objectCount do
-    objects[x].entity:process(dt)
-    objectsBatch:set(objects[x].id, objects[x].entity.x, objects[x].entity.y )
+  for i=0,objectCount do
+    local object = objects[i]
+    object.entity:process(dt)
+    objectsBatch:set(object.id, object.entity.x, object.entity.y )
   end
 end
 
 function addObjects()
-  for x=0, objectCount do
-      objects[x].id = objectsBatch:add( objects[x].entity.x, objects[x].entity.y )
+  for i=0, objectCount do
+      local object = objects[i]
+      object.id = objectsBatch:add( object.entity.x, object.entity.y )
   end
 end
 
@@ -87,6 +89,7 @@ function love.update(dt)
   if love.timer.getTime() - startTime > runningTime then
     print(score)
     love.event.quit( 0 )
+  end
 end
 
 function love.draw()
@@ -99,5 +102,4 @@ function love.draw()
   love.graphics.print("FPS: " .. fps, 10, 10)
   love.graphics.print("Score: " .. score, 10, 30)
   love.graphics.print("Objects: " .. objectCount, 10, 50)
-  end
 end

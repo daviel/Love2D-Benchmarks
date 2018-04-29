@@ -51,14 +51,22 @@ function love.load()
 end
 
 function addObjects()
-  for x=0, objectCount do
-      objects[x].id = objectsBatch:add( objects[x].body:getX(), objects[x].body:getY(), objects[x].body:getAngle() )
+  for i=0, objectCount do
+      local object = objects[i]
+      local body = object.body -- faster using locals
+      local x,y = body:getPosition() -- reduces the number of getX/getY function calls
+      local a = body:getAngle()
+      objects[i].id = objectsBatch:add( x, y, a )
   end
 end
 
 function setObjects()
-  for x=0, objectCount do
-      objectsBatch:set(objects[x].id, objects[x].body:getX(), objects[x].body:getY(), objects[x].body:getAngle() )
+  for i=0, objectCount do
+    local object = objects[i]
+    local body = object.body -- faster using locals
+    local x,y = body:getPosition() -- reduces the number of getX/getY function calls
+    local a = body:getAngle()
+    objectsBatch:set(object.id, x, y, a)
   end
 end
 
@@ -70,6 +78,7 @@ function love.update(dt)
   if love.timer.getTime() - startTime > runningTime then
     print(score)
     love.event.quit( 0 )
+  end
 end
 
 function love.draw()
@@ -83,5 +92,4 @@ function love.draw()
   love.graphics.print("FPS: " .. fps, 10, 10)
   love.graphics.print("Score: " .. score, 10, 30)
   love.graphics.print("Objects: " .. objectCount, 10, 50)
-  end
 end
