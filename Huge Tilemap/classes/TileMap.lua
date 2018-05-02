@@ -1,8 +1,8 @@
 local Tilemap = {
     windowSize = {},
 
-    minSetSize = {0, 0},
-    maxSetSize = {0, 0},
+    view = {minX = 1, minY = 1, maxX = 1, maxY = 1},
+    viewPrevious= {minX = 1, minY = 1, maxX = 1, maxY = 1},
 
     tilesetImg = {},
     tilesetSize= {},
@@ -27,6 +27,7 @@ function Tilemap:load(mapSize)
     self.imgQuad = love.graphics.newQuad(0,0, self.tileWidth, self.tileHeight, self.tilesetImg:getDimensions())
     self.spriteBatch = love.graphics.newSpriteBatch(self.tilesetImg, mapSize[1]*mapSize[2])
     self:loadMap()
+    self:calcMap()
 end
 
 function Tilemap:unload()
@@ -38,7 +39,7 @@ function Tilemap:loadMap()
     for x=1,self.mapWidth do
         self.map[x] = {}
         for y=1,self.mapHeight do
-            self.map[x][y] = {2 + rng:random(4), 3 + rng:random(4)}
+            self.map[x][y] = {2 + rng:random(4), 3 + rng:random(4), 0}
         end
     end
 end
@@ -49,57 +50,125 @@ function Tilemap:getTile(tile)
 end
 
 function Tilemap:calcMap(xOffset, yOffset, zoom)
-    local minX, minY, maxX, maxY
-    local zoomFactor = 1/zoom
+  local minX, minY, maxX, maxY
 
-    if xOffset <= 0 then
-        minX = math.floor(zoomFactor * math.abs(xOffset / self.tileWidth))
-        maxX = math.floor(zoomFactor * self.windowSize[1] / self.tileWidth) + minX + 2
-    else
-        local x = math.floor(zoomFactor * xOffset / self.tileWidth)
-        minX = 1
-        maxX = math.floor(zoomFactor * self.windowSize[1] / self.tileWidth) + 2 - x
-    end
+  minX = 1
+  minY = 1
+  maxX = self.mapWidth - 1
+  maxY = self.mapHeight - 1
 
-    if yOffset <= 0 then
-        minY = math.floor(zoomFactor * math.abs(yOffset / self.tileHeight))
-        maxY = math.floor(zoomFactor * self.windowSize[2] / self.tileHeight) + minY + 2
-    else
-        local y = math.floor(zoomFactor * yOffset / self.tileHeight)
-        minY = 1
-        maxY = math.floor(zoomFactor * self.windowSize[2] / self.tileHeight) + 2 - y
-    end
+  local i = 0
+  for x=minX, maxX do
+      for y=minY, maxY do
+          i = i + 1
+          local tile = self.map[x][y]
 
-    if minX < 1 then minX = 1 end
-    if minY < 1 then minY = 1 end
-    if maxX > self.mapWidth then maxX = self.mapWidth end
-    if maxY > self.mapHeight then maxY = self.mapHeight end
-
-    if minX ~= self.minSetSize[1] or minY ~= self.minSetSize[2] or
-       maxX ~= self.maxSetSize[1] or maxY ~= self.maxSetSize[2] then
-        self.minSetSize[1] = minX
-        self.minSetSize[2] = minY
-        self.maxSetSize[1] = maxX
-        self.maxSetSize[2] = maxY
-
-        local start = love.timer.getTime()
-        self:renderMap()
-        local result = love.timer.getTime() - start
-        --print( string.format( "RenderMap: %.5f", result * 1000 ))
-    end
+          tile[3] = self.spriteBatch:add(
+                    self:getTile(tile),
+                    x * self.tileWidth, y * self.tileHeight )
+      end
+  end
+  --print("Tiles added: " .. i)
 end
 
-function Tilemap:renderMap()
-    self.spriteBatch:clear()
-    for x=self.minSetSize[1], self.maxSetSize[1] do
-        for y=self.minSetSize[2], self.maxSetSize[2] do
-            local id = self.spriteBatch:add(
-                self:getTile(self.map[x][y]),
-                x * self.tileWidth, y * self.tileHeight
-            )
+function Tilemap:removeTiles()
+    local i = 0
+
+
+    -- remove tiles which are at the top of the view
+    for x=self.viewPrevious.minX, self.viewPrevious.maxX do
+        for y=self.viewPrevious.minY, self.view.minY do
+            i = i + 1
+            self.spriteBatch:set(self.map[x][y][3], 0, 0, 0, 0, 0)
         end
     end
-    self.spriteBatch:flush()
+
+    -- remove tiles which are at the left of the view
+    for x=self.viewPrevious.minX, self.view.minX do
+      for y=self.view.minY, self.viewPrevious.maxY do
+            i = i + 1
+            self.spriteBatch:set(self.map[x][y][3], 0, 0, 0, 0, 0)
+        end
+    end
+
+    -- remove tiles which are at the right of the view
+    for x=self.view.maxX, self.viewPrevious.maxX do
+      for y=self.view.minY, self.viewPrevious.maxY do
+            i = i + 1
+            self.spriteBatch:set(self.map[x][y][3], 0, 0, 0, 0, 0)
+        end
+    end
+
+    -- remove tiles which are at the bottom of the view
+    for x=self.view.minX, self.view.maxX do
+      for y=self.view.maxY, self.viewPrevious.maxY do
+            i = i + 1
+            self.spriteBatch:set(self.map[x][y][3], 0, 0, 0, 0, 0)
+        end
+    end
+
+    print("Tiles removed: " .. i)
+end
+
+function Tilemap:addTiles()
+  local i = 0
+
+  -- add tiles which are at the top in the view
+  for x=self.view.minX, self.view.maxX do
+      for y=self.view.minY, self.viewPrevious.minY - 1 do
+          i = i + 1
+          self.spriteBatch:set(
+             self.map[x][y][3], self:getTile(self.map[x][y]), x * self.tileWidth, y * self.tileHeight, 0, 1, 1
+          )
+      end
+  end
+
+  -- add tiles which are at the left in the view
+  for x=self.view.minX, self.viewPrevious.minX - 1 do
+    for y=self.viewPrevious.minY, self.view.maxY do
+          i = i + 1
+          self.spriteBatch:set(
+             self.map[x][y][3], self:getTile(self.map[x][y]), x * self.tileWidth, y * self.tileHeight, 0, 1, 1
+          )
+      end
+  end
+
+  -- add tiles which are at the right in the view
+  for x=self.viewPrevious.maxX, self.view.maxX -1 do
+    for y=self.view.minY, self.view.maxY do
+          i = i + 1
+          self.spriteBatch:set(
+             self.map[x][y][3], self:getTile(self.map[x][y]), x * self.tileWidth, y * self.tileHeight, 0, 1, 1
+          )
+      end
+  end
+
+  -- add tiles which are at the bottom in the view
+  for x=self.view.minX, self.viewPrevious.maxX do
+    for y=self.viewPrevious.maxY, self.view.maxY - 1 do
+          i = i + 1
+          self.spriteBatch:set(
+             self.map[x][y][3], self:getTile(self.map[x][y]), x * self.tileWidth, y * self.tileHeight, 0, 1, 1
+          )
+      end
+  end
+
+  print("Tiles added: " .. i)
+end
+
+function Tilemap:renderTiles()
+    local i = 0
+    for x=self.view.minX, self.view.maxX do
+        for y=self.view.minY, self.view.maxY do
+            i = i + 1
+            local tile = self.map[x][y]
+
+            tile[3] = self.spriteBatch:add(
+                      self:getTile(tile),
+                      x * self.tileWidth, y * self.tileHeight )
+        end
+    end
+    print("Tiles added: " .. i)
 end
 
 function Tilemap:draw(xOffset, yOffset, zoom)
