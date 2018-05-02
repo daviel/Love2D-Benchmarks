@@ -6,6 +6,7 @@ Useful optimizations(I found so far):
 - Use SpriteBatches
 - Don't clear that SpriteBatch. Just set the sprites positions(10-20% more performance)
 - Use locals: see Circle Physics setObjects method in the optimized version and non-optimized one
+- Set friction of your physic-objects to 1(if not otherwise needed) to improve physics performance(15%)
   
 
 ## How-To
@@ -30,25 +31,17 @@ You can tweak the benchmark by setting the objectCount in the code, change the r
 
 ## Results
 
-**Love 0.10.2**, i5-6260U CPU @ 1.80GHz, Mesa 17.3.8 DRI Intel(R) Iris Graphics 540 (Skylake GT3e), Debian(testing) GNU/Linux Kernel 4.15
-
-| Benchmark | n | Average | Minimum | Maximum | Time(sec) | Object Count |
-| --- | --- | --- | --- | --- | --- | --- |
-| Circle Physics | 5 | 74077.4 | 72182 | 75747 | 8 | 2000 |
-| Circle Physics Optimized | 5 | 75745.6 | 73264 | 78046 | 8 | 2000 |
-| Nested Object Logic | 5 | 159450.2 | 150822 | 164416 | 8 | 25000 |
-| Nested Object Logic Optimized | 5 | 192663.4 | 190115 | 196776 | 8 | 25000 |
-| Huge Tilemap | 5 | 7790316.6 | 7607165 | 7925859 | 36 | 512x512 |
-
 **Love 11.1**, i5-6260U CPU @ 1.80GHz, Mesa 17.3.8 DRI Intel(R) Iris Graphics 540 (Skylake GT3e), Debian(testing) GNU/Linux Kernel 4.15
 
 | Benchmark | n | Average | Minimum | Maximum | Time(sec) | Object Count |
 | --- | --- | --- | --- | --- | --- | --- |
-| Circle Physics | 5 | 85584.8 | 82073 | 90584 | 8 | 2000 |
-| Circle Physics Optimized | 5 | 84876.4 | 82332 | 88819 | 8 | 2000 |
-| Nested Object Logic | 5 | 142028.4 | 139074 | 146522 | 8 | 25000 |
-| Nested Object Logic Optimized | 5 | 168370.2 | 164101 | 170602 | 8 | 25000 |
-| Huge Tilemap | 5 | 7069123 | 7006160 | 7122534 | 36 | 512x512 |
+| Circle Physics | 5 | 103941 | 75725 | 172992 | 8 | 2000 |
+| Circle Physics Optimized | 5 | 135635 | 96290 | 180845 | 8 | 2000 |
+| Nested Object Logic | 5 | 142336 | 137918 | 148621 | 8 | 25000 |
+| Nested Object Logic Optimized | 5 | 162441 | 159457 | 165195 | 8 | 25000 |
+| Huge Tilemap | 5 | 5389719 | 5354886 | 5511811 | 32 | 512x512 |
+| Huge Tilemap Optimized | 5 | 5305393 | 5204595 | 5584530 | 32 | 512x512 |
+| Huge Tilemap Experimental | 5 | 4506699 | 4329579 | 4779127 | 32 | 512x512 |
 
 ## Project
 I will add some more benchmarks every now and then and will write down every optimization I found. The next thing I am currently working on is a high performance tile-renderer.
