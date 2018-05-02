@@ -25,7 +25,7 @@ function love.load()
     :after(camera, 4, { x = 0, y = 0 })
     :after(camera, 6, { zoom = 0.1 })
     :after(camera, 6, { x = -16*16 })
-    :after(camera, 8, { zoom = 2, x = -32*16, y = -32*16 })
+    :after(camera, 4, { zoom = 2, x = -32*16, y = -32*16 })
     :oncomplete(exit)
 end
 
