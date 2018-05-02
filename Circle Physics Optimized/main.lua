@@ -44,7 +44,8 @@ function love.load()
     objects[i].body = love.physics.newBody(world, randomizer:random(windowWidth), randomizer:random(windowHeight), "dynamic") --place the body in the center of the world and make it dynamic, so it can move around
     objects[i].shape = love.physics.newCircleShape(4) --the ball's shape has a radius of 20
     objects[i].fixture = love.physics.newFixture(objects[i].body, objects[i].shape, 1) -- Attach fixture to body and give it a density of 1.
-    objects[i].fixture:setRestitution(0) --let the ball bounce
+    objects[i].fixture:setRestitution(0) -- dont let the ball bounce
+    objects[i].fixture:setFriction(1) -- setting a high friction increases performance
   end
 
   addObjects()
