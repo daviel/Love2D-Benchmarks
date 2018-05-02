@@ -8,7 +8,7 @@ local image
 
 local camera = {x = 0, y = 0, zoom = 1}
 
-local zoomSpeed = 0.005
+local zoomSpeed = 0.01
 local scrollSpeed = 120
 local mapSize = {512, 512}
 
@@ -38,32 +38,32 @@ function love.load()
     end
 
 function love.update(dt)
-    --if love.keyboard.isDown("down") then
-    --    camera.y = camera.y - scrollSpeed * dt
-    --end
-    --if love.keyboard.isDown("up") then
-    --    camera.y = camera.y + scrollSpeed * dt
-    --end
-    --if love.keyboard.isDown("right") then
-    --    camera.x = camera.x - scrollSpeed * dt
-    --end
-    --if love.keyboard.isDown("left") then
-    --    camera.x = camera.x + scrollSpeed * dt
-    --end
-    --if love.keyboard.isDown("w") then
-    --    camera.zoom = camera.zoom + zoomSpeed
-    --    camera.x = camera.x - zoomCenterX
-    --    camera.y = camera.y - zoomCenterY
-    --end
-    --if love.keyboard.isDown("s") then
-    --    camera.zoom = camera.zoom - zoomSpeed
-    --    camera.x = camera.x + zoomCenterX
-    --    camera.y = camera.y + zoomCenterY
-    --end
+    if love.keyboard.isDown("down") then
+        camera.y = camera.y - scrollSpeed * dt
+    end
+    if love.keyboard.isDown("up") then
+        camera.y = camera.y + scrollSpeed * dt
+    end
+    if love.keyboard.isDown("right") then
+        camera.x = camera.x - scrollSpeed * dt
+    end
+    if love.keyboard.isDown("left") then
+        camera.x = camera.x + scrollSpeed * dt
+    end
+    if love.keyboard.isDown("w") then
+        camera.zoom = camera.zoom + zoomSpeed
+        camera.x = camera.x - zoomCenterX
+        camera.y = camera.y - zoomCenterY
+    end
+    if love.keyboard.isDown("s") then
+        camera.zoom = camera.zoom - zoomSpeed
+        camera.x = camera.x + zoomCenterX
+        camera.y = camera.y + zoomCenterY
+    end
     fps = love.timer.getFPS()
     score = score + fps
     flux.update(dt)
-    --MapLoader:calcMap(camera.x, camera.y, camera.zoom)
+    MapLoader:calcMap(camera.x, camera.y, camera.zoom)
 end
 
 function love.draw()
