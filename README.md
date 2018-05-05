@@ -44,7 +44,8 @@ You can tweak the benchmark by setting the objectCount in the code, change the r
 | Huge Tilemap Experimental | 5 | 4506699 | 4329579 | 4779127 | 32 | 512x512 |
 
 ## Project
-I will add some more benchmarks every now and then and will write down every optimization I found. The next thing I am currently working on is a high performance tile-renderer.
+I will add some more benchmarks every now and then and will write down every optimization I found.  
+  
 I am open for any contribution and information on improving my benchmarks as well as suggestions what should be implemented.
 
 ## Background
