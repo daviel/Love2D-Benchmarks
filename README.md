@@ -43,6 +43,15 @@ You can tweak the benchmark by setting the objectCount in the code, change the r
 | Huge Tilemap Optimized | 5 | 5305393 | 5204595 | 5584530 | 32 | 512x512 |
 | Huge Tilemap Experimental | 5 | 4506699 | 4329579 | 4779127 | 32 | 512x512 |
 
+**Love 11.1**, Raspberry Pi 3, Mesa 13, Raspbian GNU/Linux Kernel 4.14.34
+
+| Benchmark | n | Average | Minimum | Maximum | Time(sec) | Object Count |
+| --- | --- | --- | --- | --- | --- | --- |
+| Circle Physics | 5 | 29899 | 28952 | 30704 | 8 | 500 |
+| Circle Physics Optimized | 5 | 39698 | 36644 | 46011 | 8 | 500 |
+| Nested Object Logic | 5 | 26848 | 24132 | 28590 | 8 | 5000 |
+| Nested Object Logic Optimized | 5 | 22156 | 20615 | 23936 | 8 | 5000 |
+
 ## Project
 I will add some more benchmarks every now and then and will write down every optimization I found.  
   
